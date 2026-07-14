@@ -1,0 +1,329 @@
+/* ============================================================
+   BASE — AMBOS OS TEMAS
+============================================================ */
+.weather-widget {
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    /* box-shadow: 0 4px 14px rgba(0,0,0,0.20); */
+    font-family: system-ui, sans-serif;
+    transition: background .25s, color .25s;
+}
+
+.background-transparent {
+    background: transparent !important;
+    box-shadow: none !important;
+    /* border: 1px solid #ffffff21; */
+    padding: 0;
+}
+
+/* ============================================================
+   TEMA ESCURO
+============================================================ */
+.theme-dark {
+    background: #1e1e1e;
+    color: #fff;
+}
+
+.theme-dark .forecast-item {
+    background: rgba(255,255,255,0.07);
+}
+.theme-dark .forecast-item:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.theme-dark .forecast-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.15);
+}
+
+.theme-dark .forecast-item[data-tooltip]:hover::after {
+    background: #000;
+    color: #fff;
+}
+
+/* ============================================================
+   TEMA CLARO
+============================================================ */
+.theme-light {
+    background: #f3f6f9;
+    color: #1e1e1e;
+}
+
+.theme-light .weather-left .desc-sub,
+.theme-light .weather-right .wind,
+.theme-light .f-desc,
+.theme-light .f-temp-min {
+    opacity: .7;
+}
+
+.theme-light .forecast-item {
+    background: rgba(0,0,0,0.05);
+}
+.theme-light .forecast-item:hover {
+    background: rgba(0,0,0,0.10);
+}
+
+.theme-light .forecast-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.15);
+}
+
+.theme-light .forecast-item[data-tooltip]:hover::after {
+    background: #fff;
+    color: #000;
+    border: 1px solid #ddd;
+}
+
+/* ============================================================
+   ÁREA — CLIMA ATUAL
+============================================================ */
+.weather-current {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.weather-left .temp {
+    font-size: 42px;
+    font-weight: 700;
+    height: 60px;
+}
+
+.weather-left .desc {
+    margin-top: -4px;
+    font-size: 17px;
+    opacity: .9;
+}
+
+.weather-left .desc-sub {
+    font-size: 14px;
+    opacity: .75;
+}
+
+.weather-right {
+    text-align: right;
+}
+
+.weather-right .icon-wrap {
+    font-size: 48px;
+    margin-bottom: 4px;
+}
+
+.weather-right .wind {
+    font-size: 13px;
+    opacity: .7;
+}
+
+/* ============================================================
+   PREVISÃO – LISTA
+============================================================ */
+.weather-forecast {
+    margin-top: 4px;
+}
+
+.forecast-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+}
+
+.forecast-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+/* Card */
+.forecast-item {
+    flex: 1;
+    min-width: 110px;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    position: relative;
+    transition: background .25s;
+}
+
+.f-date {
+    font-size: 15px;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.f-icon {
+    font-size: 38px;
+    margin-bottom: 4px;
+}
+
+.f-temps {
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.f-temp-max {
+    font-weight: bold;
+}
+
+.f-temp-min {
+    opacity: .6;
+}
+
+.f-desc {
+    font-size: 13px;
+    opacity: .8;
+}
+
+/* Tooltip */
+.forecast-item[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+/* ============================================================
+   ÍCONES — CORES DO WEATHER ICONS
+============================================================ */
+.current-icon.wi-day-sunny,
+.day-icon.wi-day-sunny {
+    color: #ffcc00;
+}
+
+.current-icon.wi-day-cloudy,
+.day-icon.wi-day-cloudy {
+    color: #606060;
+}
+
+.theme-dark .current-icon.wi-day-cloudy,
+.theme-dark .day-icon.wi-day-cloudy {
+    color: #ffffff;
+}
+
+.current-icon.wi-cloudy,
+.day-icon.wi-cloudy {
+    color: #9ca3af;
+}
+
+.current-icon.wi-rain,
+.day-icon.wi-rain,
+.current-icon.wi-showers,
+.day-icon.wi-showers,
+.current-icon.wi-storm-showers,
+.day-icon.wi-storm-showers,
+.current-icon.wi-hail,
+.day-icon.wi-hail,
+.current-icon.wi-rainy,
+.day-icon.wi-rainy  {
+    color: #4DB5FF;
+}
+
+.current-icon.wi-snow,
+.day-icon.wi-snow {
+    color: #82cfff;
+}
+
+.current-icon.wi-fog,
+.day-icon.wi-fog {
+    color: #b0b0b0;
+}
+
+.current-icon.wi-thunderstorm,
+.day-icon.wi-thunderstorm {
+    color: #FF8F23;
+}
+
+/* ============================================================
+   RESPONSIVO
+============================================================ */
+@media (max-width: 480px) {
+    .weather-current {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .weather-right {
+        text-align: center;
+    }
+
+    .weather-left .temp {
+        font-size: 36px;
+    }
+}
+
+/* ============================================================
+   COMPACT — 250–300 px
+============================================================ */
+.weather-widget-compact {
+    width: 260px;
+    height: 90px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    /* box-shadow: 0 2px 6px rgba(0,0,0,0.08); */
+    font-family: inherit;
+    overflow: hidden;
+}
+
+.theme-dark.weather-widget-compact {
+    background: #1e1f26;
+    color: #f1f1f3;
+}
+
+.theme-light.weather-widget-compact {
+    background: #f5f5f7;
+    color: #222;
+}
+
+.compact-wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.c-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.c-temp {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.c-desc {
+    font-size: 13px;
+    opacity: .9;
+}
+
+.c-range {
+    font-size: 12px;
+    opacity: .75;
+}
+
+.c-right .c-icon svg,
+.c-right .c-icon img {
+    width: 32px;
+    height: 32px;
+}
+
+.compact-no-data {
+    font-size: 14px;
+    opacity: .8;
+}
