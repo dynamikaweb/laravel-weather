@@ -2,11 +2,13 @@
 
 namespace DynamikaSolucoesWeb\LaravelWeather\Services;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 
 class WeatherService
 {
+    private const ERROR_CACHE_SECONDS = 60;
+
     private float $lat;
     private float $lng;
     private int $dias;
@@ -24,34 +26,48 @@ class WeatherService
 
     public function getForecast(): array
     {
-        return Cache::remember($this->cacheKey, $this->cacheDuration, function () {
-            $url = "https://api.open-meteo.com/v1/forecast";
+        $cached = Cache::get($this->cacheKey);
 
-            try {
-                $response = Http::timeout(5)->withoutVerifying()->get($url, [
-                    'latitude' => $this->lat,
-                    'longitude' => $this->lng,
-                    'current_weather' => 'true',
-                    'daily' => 'weathercode,temperature_2m_max,temperature_2m_min',
-                    'timezone' => 'auto',
-                    'forecast_days' => $this->dias,
-                ]);
+        if (is_array($cached)) {
+            return $cached;
+        }
 
-                if ($response->successful()) {
-                    return $response->json();
-                }
+        $forecast = $this->fetch();
 
-                return [
-                    'error' => true,
-                    'message' => 'Resposta inválida da API Open-Meteo.',
-                ];
+        Cache::put(
+            $this->cacheKey,
+            $forecast,
+            isset($forecast['error']) ? self::ERROR_CACHE_SECONDS : $this->cacheDuration
+        );
 
-            } catch (\Exception $e) {
-                return [
-                    'error' => true,
-                    'message' => 'Não foi possível conectar à API Open-Meteo: ' . $e->getMessage(),
-                ];
-            }
-        });
+        return $forecast;
+    }
+
+    private function fetch(): array
+    {
+        try {
+            $response = Http::connectTimeout(3)->timeout(5)->get('https://api.open-meteo.com/v1/forecast', [
+                'latitude' => $this->lat,
+                'longitude' => $this->lng,
+                'current_weather' => 'true',
+                'daily' => 'weathercode,temperature_2m_max,temperature_2m_min',
+                'timezone' => 'auto',
+                'forecast_days' => $this->dias,
+            ]);
+        } catch (\Throwable $e) {
+            return [
+                'error' => true,
+                'message' => 'Não foi possível conectar à API Open-Meteo: ' . $e->getMessage(),
+            ];
+        }
+
+        if ($response->successful() && is_array($response->json())) {
+            return $response->json();
+        }
+
+        return [
+            'error' => true,
+            'message' => 'Resposta inválida da API Open-Meteo.',
+        ];
     }
 }
